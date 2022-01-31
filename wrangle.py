@@ -95,3 +95,33 @@ def get_weekly_student_activity(df):
     #plt.ylabel('Number of Page Visits')
     #plt.legend()
     return webdev_ds_hits, webdev_webdev_hits, ds_ds_hits, ds_webdev_hits
+
+def get_top_lessons_for_graduates(df):
+    # Create a dataframe where the curriculum hits happen after the student's graduation.
+    post_graduation_ds = df[df.index > df.end_date]
+    # Create a dataframe for the top lessons for Data Science graduates.
+    top_lessons_ds = pd.DataFrame(post_graduation_ds[post_graduation_ds.ds_student == True].path.value_counts().head(10))
+    # Reset the index and rename it to 'lesson'
+    top_lessons_ds = top_lessons_ds.reset_index().rename(columns={'index': 'lesson'})
+    
+    # Create a barplot for the top lessons for Data Science Graduates.
+    #ax = sns.barplot(x='lesson',y='path', data=top_lessons_ds.head(4))
+    #ax.set_xticklabels(ax.get_xticklabels(), rotation = 30)
+    #plt.ylabel('Number of Visits')
+    #plt.xlabel('Lesson')
+    #plt.title('Top Four(4) Lessons for Data Science Graduates')
+    # Create a dataframe where the curriculum hits happen after the student's graduation.
+    post_graduation_webdev = df[df.index > df.end_date]
+    # Get the value counts for top-ten paths visited.
+    post_graduation_webdev[post_graduation_webdev.ds_student == False].path.value_counts().head(10)
+    # Create a dataframe for the top lessons for Webdev graduates.
+    top_lessons_webdev = pd.DataFrame(post_graduation_webdev[post_graduation_webdev.ds_student == False].path.value_counts().head(10))
+    # Reset the index and rename it to 'lesson'
+    top_lessons_webdev = top_lessons_webdev.reset_index().rename(columns={'index': 'lesson'})
+    # Create a barplot for the top lessons for Webdev graduates.
+    #ax = sns.barplot(x='lesson',y='path', data=top_lessons_webdev.head(4))
+    #ax.set_xticklabels(ax.get_xticklabels(), rotation = 30)
+    #plt.ylabel('Number of Visits')
+    #plt.xlabel('Lesson')
+    #plt.title('Top Four(4) Lessons for Web Development Graduates')
+    return top_lessons_ds, top_lessons_webdev
